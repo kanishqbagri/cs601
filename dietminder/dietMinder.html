@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Diet Minder</title>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+
+    <link rel="stylesheet" href="./css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css">
+</head>
+<body>
+<div class="container">
+	<br>
+	<h3>Diet Minder</h3>
+	<div>
+		<label>Food you ate</label>
+		<input class="form-control" type="text" name="food" placeholder="Bread" id="food" value="Bread">
+	</div>
+	<div>
+		<label>Calories</label>
+		<input class="form-control" type="text" name="calories" id="calories" placeholder="100" value="100">
+	</div>
+<!-- 	<div id="calendar">
+		<p>Date: <input type="text" name="date" id="date"></p>
+	</div> -->
+	<br>
+	<div>
+		<button value="Add" onclick="addItem()">Add</button>
+	</div>
+	
+</div>
+<br>
+<div class="container" id="diary">
+	<table class="table table-striped table-bordered table-hover" id="displayTable">
+			<thead>
+				<tr>
+					<th>Food</th>
+					<th>Calorie</th>
+					<th>Modify/Delete</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+</div>
+<div class="container">
+	<p> Total Calories: <span id="totalCal"></span> </p>
+</div>
+</body>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script type="text/javascript">
+	var dietArray=new Array();
+	
+	function addItem(){
+		var arrayItem=new Array();
+		var food=$('#food').val();
+		var calories=$('#calories').val();
+		arrayItem.push(food);
+		arrayItem.push(calories)
+		dietArray.push(arrayItem);
+		// console.log("Values Entered : " + food +" "+calories);
+		// console.log("Values Entered : " + arrayItem);
+		// console.log("Values Entered : " + dietArray[0] +" "+dietArray[0][1]);
+		displayTable(food, calories);
+		totalCalories();
+	}
+
+	function displayTable(food, calories){
+		$("#displayTable").append('<tr><td>' + food+'</td><td>'+calories+'</td><td onclick="removeRow(this)">Delete </td></tr>');
+
+	}
+
+	function totalCalories(){
+		var totalCal=0;
+		$("#totalCal").empty();
+		$.each(dietArray, function(i, item){
+			totalCal = parseInt(totalCal) + parseInt(item[1]);
+		})
+		$("#totalCal").text(totalCal);
+		console.log("Total cal: " + totalCal)
+	}
+
+	function removeRow(element){
+		var index=0;
+		var table = document.getElementById('displayTable');
+		var c = confirm("Do you want to remove this row");
+           if(c === true)
+                {
+                index = element.parentNode.rowIndex;
+                console.log(index);
+                table.deleteRow(index);
+                console.log("length: " + dietArray.length);
+                var removed=dietArray.splice(index,1);
+                console.log("length: " + dietArray.length);                
+                }
+                totalCalories();
+	}
+	
+</script>
+</html>
